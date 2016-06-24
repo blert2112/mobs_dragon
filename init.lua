@@ -78,7 +78,7 @@ minetest.register_node("mobs_dragon:dragon_egg", {
 		elseif name1 == "default:cactus" then which_dragon = "green"
 		elseif name1 == "default:water_source" then which_dragon = "blue"
 		end
-		minetest.after(6, function(pos, dragon, pname) --600
+		minetest.after(600, function(pos, dragon, pname)
 			minetest.remove_node(pos)
 			local ent = minetest.add_entity(pos, "mobs_dragon:dragon_sm_"..dragon)
 			local obj = ent:get_luaentity()

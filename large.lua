@@ -57,7 +57,7 @@ mobs:register_mob("mobs_dragon:dragon_lg_red", {
 	shoot_offset = 1,
 	knock_back = 1,
 	drops = {
-		{name = "mobs_dragon:dragon_egg", chance = 1, min = 1, max = 1},
+		{name = "mobs_dragon:dragon_egg", chance = 0.5, min = 1, max = 1},
 	}
 })
 
