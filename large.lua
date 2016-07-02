@@ -1,4 +1,6 @@
 
+-- all of the following is documented in 'api.txt' in the mobs_redo folder
+
 -- large red dragon
 mobs:register_mob("mobs_dragon:dragon_lg_red", {
 	visual = "mesh",

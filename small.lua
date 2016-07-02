@@ -1,23 +1,40 @@
 
+-- functions common to all four small dragon entities
+-------------------------------------------------------------------------------
+-- mob.do_custom
 local step_custom = function(self, dtime)
+	-- does this mob have a "driver" (is someone attached)?
 	if self.driver then
+		-- allow mounted mob to me "driven"
+		-- send self, dtime, animation when moving, animation when standing, and can it fly
 		lib_mount.drive(self, dtime, "walk", "stand", true)
+
+		-- return false to skip the rest of mobs_redo on_step function
+		-- must do this or the mob will not obey you and will go about it's own business
 		return false
 	end
+
+	-- return true to allow mobs_redo on_step to complete (normal mob fuction with no "driver")
 	return true
 end
 
+-- mob.on_rightclick
 local on_rc = function(self, clicker)
+	-- if the clicker is not a player then abort
 	if not clicker or not clicker:is_player() then
 		return
 	end
+
+	-- are we feeding
 	if mobs:feed_tame(self, clicker, 1, false, false) then
 		return
 	end
+
+	-- if mob is tamed and the clicker is the owner
 	if self.tamed and self.owner == clicker:get_player_name() then
 		local inv = clicker:get_inventory()
 		if self.driver and clicker == self.driver then
-			-- detach
+			-- dismount and return saddle to player
 			lib_mount.detach(self, clicker, {x=1, y=0, z=1})
 			if inv:room_for_item("main", "mobs:saddle") then
 				inv:add_item("main", "mobs:saddle")
@@ -26,7 +43,7 @@ local on_rc = function(self, clicker)
 			end
 			self.object:setacceleration({x=0, y=0, z=0})
 		elseif not self.driver then
-			-- attach
+			-- mount and take saddle from player
 			if clicker:get_wielded_item():get_name() == "mobs:saddle" then
 				lib_mount.attach(self, clicker, {x=0, y=12, z=4}, {x=0, y=0, z=4})
 				inv:remove_item("main", "mobs:saddle")
@@ -34,6 +51,8 @@ local on_rc = function(self, clicker)
 		end
 	end
 end
+-------------------------------------------------------------------------------
+
 
 -- small red dragon
 mobs:register_mob("mobs_dragon:dragon_sm_red", {
