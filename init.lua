@@ -102,17 +102,22 @@ minetest.register_node("mobs_dragon:dragon_egg", {
 
 		-- 10 seconds after the egg is placed, spawn the appropriate dragon
 		minetest.after(10, function(pos, dragon, pname)
+			-- remove egg
 			minetest.remove_node(pos)
+			-- spawn dragon
 			local ent = minetest.add_entity(pos, "mobs_dragon:dragon_sm_"..dragon)
+			-- get dragon object and set owner name
 			local obj = ent:get_luaentity()
 			obj.tamed = true
 			obj.owner = pname
+
 			if use_whistle == true then
 				-- not used because use_whistle should not be set to true
 				local dcount = #tamed_dragons[pname]
 				tamed_dragons[pname][dcount+1] = ent
 			else
 				-- set dragon order and state (and therefore animation) to stand
+				-- dragon will wander off if oyu don't do this
 				obj.order = "stand"
 				obj.state = "stand"
 			end
