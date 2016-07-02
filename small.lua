@@ -32,18 +32,20 @@ local on_rc = function(self, clicker)
 
 	-- if mob is tamed and the clicker is the owner
 	if self.tamed and self.owner == clicker:get_player_name() then
+		-- get the inventory of the clicker so we can take or return the saddle
 		local inv = clicker:get_inventory()
 		if self.driver and clicker == self.driver then
-			-- dismount and return saddle to player
+			-- is the clicker driving? then dismount and return saddle to player
 			lib_mount.detach(self, clicker, {x=1, y=0, z=1})
 			if inv:room_for_item("main", "mobs:saddle") then
 				inv:add_item("main", "mobs:saddle")
 			else
 				minetest.add_item(clicker.getpos(), "mobs:saddle")
 			end
+			--set mob acceleration to zero
 			self.object:setacceleration({x=0, y=0, z=0})
 		elseif not self.driver then
-			-- mount and take saddle from player
+			-- no driver? then mount and take saddle from player
 			if clicker:get_wielded_item():get_name() == "mobs:saddle" then
 				lib_mount.attach(self, clicker, {x=0, y=12, z=4}, {x=0, y=0, z=4})
 				inv:remove_item("main", "mobs:saddle")
