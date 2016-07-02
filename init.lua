@@ -117,7 +117,7 @@ minetest.register_node("mobs_dragon:dragon_egg", {
 				tamed_dragons[pname][dcount+1] = ent
 			else
 				-- set dragon order and state (and therefore animation) to stand
-				-- dragon will wander off if oyu don't do this
+				-- dragon will wander off if you don't do this
 				obj.order = "stand"
 				obj.state = "stand"
 			end
