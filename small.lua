@@ -7,7 +7,7 @@ local step_custom = function(self, dtime)
 	if self.driver then
 		-- allow mounted mob to me "driven"
 		-- send self, dtime, animation when moving, animation when standing, and can it fly
-		lib_mount.drive(self, dtime, "walk", "stand", true)
+		lib_mount.drive(self, dtime, "walk", "stand", 0, true)
 
 		-- return false to skip the rest of mobs_redo on_step function
 		-- must do this or the mob will not obey you and will go about it's own business
