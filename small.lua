@@ -7,7 +7,7 @@ local step_custom = function(self, dtime)
 	if self.driver then
 		-- allow mounted mob to me "driven"
 		-- send self, dtime, animation when moving, animation when standing, and can it fly
-		lib_mount.drive(self, dtime, "walk", "stand", 0, true)
+		lib_mount.drive(self, dtime, true, "walk", "stand", 0, true)
 
 		-- return false to skip the rest of mobs_redo on_step function
 		-- must do this or the mob will not obey you and will go about it's own business
@@ -36,14 +36,15 @@ local on_rc = function(self, clicker)
 		local inv = clicker:get_inventory()
 		if self.driver and clicker == self.driver then
 			-- is the clicker driving? then dismount and return saddle to player
-			lib_mount.detach(self, clicker, {x=1, y=0, z=1})
+			lib_mount.detach(clicker, {x=1, y=0, z=1})
 			if inv:room_for_item("main", "mobs:saddle") then
 				inv:add_item("main", "mobs:saddle")
 			else
 				minetest.add_item(clicker.getpos(), "mobs:saddle")
 			end
-			--set mob acceleration to zero
-			self.object:setacceleration({x=0, y=0, z=0})
+			--set mob velocity and acceleration to zero
+			self.object:setvelocity({x=0, y=0, z=0})
+			self.object:setacceleration({x=0, y=-1, z=0})
 		elseif not self.driver then
 			-- no driver? then mount and take saddle from player
 			if clicker:get_wielded_item():get_name() == "mobs:saddle" then
